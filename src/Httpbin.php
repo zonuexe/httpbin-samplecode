@@ -2,6 +2,8 @@
 
 namespace zonuexe\Httpbin;
 
+use GuzzleHttp\Client as HttpClient;
+
 final class Httpbin
 {
     /** @var string */
@@ -18,24 +20,22 @@ final class Httpbin
      */
     public function getByNameAndAuthors(string $name, $authors): Book
     {
-        $context = stream_context_create([
-            'http' => [
-                'method' => 'GET',
-                'header' => [
-                    'Authorization' => "Bearer {$this->access_token}",
-                    'User-Agent' => sprintf('php/%s; zonuexe\\httpbin', PHP_VERSION),
-                ],
-                'ignore_errors' => true,
+        $client = new HttpClient;
+        $response = $client->request('GET', 'https://httpbin.org/get', [
+            'header' => [
+                'Authorization' => "Bearer {$this->access_token}",
+                'User-Agent' => sprintf('php/%s; zonuexe\\httpbin', PHP_VERSION),
             ],
+            'query' => [
+                'name' => $name,
+                'authors' => (array)$authors,
+                'amount' => rand(1, 100),
+            ],
+            'http_errors' => false,
         ]);
-        $response = file_get_contents('https://httpbin.org/get?' . http_build_query([
-            'name' => $name,
-            'authors' => (array)$authors,
-            'amount' => rand(1, 100),
-        ]), false, $context);
 
         $data = [];
-        foreach (json_decode($response, true)['args'] as $k => $value) {
+        foreach (json_decode((string)$response->getBody(), true)['args'] as $k => $value) {
             preg_match('/\A(?<key>[^[]+)(?:\[(?<nestkeys>.+)\])?\z/', $k, $matches);
 
             $key = $matches['key'];
