@@ -1,0 +1,16 @@
+{
+    "name": "zonuexe/httpbin-client",
+    "license": "Apache-2..0",
+    "description": "Sample implementation of SDK library over HTTP.",
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "zonuexe\\Httpbin\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
