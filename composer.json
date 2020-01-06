@@ -3,7 +3,8 @@
     "license": "Apache-2..0",
     "description": "Sample implementation of SDK library over HTTP.",
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "guzzlehttp/guzzle": "^6.5"
     },
     "autoload": {
         "psr-4": {
