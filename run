@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+namespace zonuexe\Httpbin;
+
+require __DIR__ . '/vendor/autoload.php';
+
+
+$service = new Httpbin();
+$book = $service->getByNameAndAuthors('平穏世代の韋駄天達 2', [
+    '原作' => '天原',
+    '作画' => 'クール教信者',
+]);
+
+var_dump($book);
